@@ -1,0 +1,50 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="페이지-1" id="KLZvoCUKnNa2LL1XJty3">
+    <mxGraphModel dx="1426" dy="849" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <object label="제목 없는 레이어" 이정표="" id="보안">
+          <mxCell parent="0" />
+        </object>
+        <mxCell id="0p4FusfCMEP09p1FtQ1R-7" value="Text" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="보안">
+          <mxGeometry x="605" y="268" width="50" height="30" as="geometry" />
+        </mxCell>
+        <object label="" 국수="" tags="" id="0p4FusfCMEP09p1FtQ1R-8">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="보안">
+            <mxGeometry x="680" y="360" width="80" height="80" as="geometry" />
+          </mxCell>
+        </object>
+        <mxCell id="0p4FusfCMEP09p1FtQ1R-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.063;entryY=0.275;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="보안" source="0p4FusfCMEP09p1FtQ1R-2" target="0p4FusfCMEP09p1FtQ1R-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <object label="" id="1">
+          <mxCell parent="0" />
+        </object>
+        <mxCell id="0p4FusfCMEP09p1FtQ1R-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0p4FusfCMEP09p1FtQ1R-1" target="0p4FusfCMEP09p1FtQ1R-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <object label="" dark="" tags="" link="data:action/json,{&quot;actions&quot;:[{&quot;toggle&quot;:{&quot;tags&quot;:[&quot;step3&quot;]}}]}" id="0p4FusfCMEP09p1FtQ1R-1">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="260" y="310" width="80" height="80" as="geometry" />
+          </mxCell>
+        </object>
+        <UserObject label="" link="https://www.notion.so/217ba2a4b6e28097ae46cf0185b8bd0b?source=copy_link" linkTarget="_blank" 보안="" tags="보안 step3" id="0p4FusfCMEP09p1FtQ1R-2">
+          <mxCell style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+            <mxGeometry x="430" y="310" width="80" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="0p4FusfCMEP09p1FtQ1R-11" value="Step3" parent="0" />
+        <UserObject label="" tags="" id="0p4FusfCMEP09p1FtQ1R-12">
+          <mxCell style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="0p4FusfCMEP09p1FtQ1R-11">
+            <mxGeometry x="640" y="500" width="120" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" link="data:action/json,{&quot;actions&quot;:[{&quot;toggle&quot;:{&quot;tags&quot;:[&quot;step3&quot;]}}]}" id="0p4FusfCMEP09p1FtQ1R-13">
+          <mxCell style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="0p4FusfCMEP09p1FtQ1R-11">
+            <mxGeometry x="320" y="550" width="120" height="60" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
