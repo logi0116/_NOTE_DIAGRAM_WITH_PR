@@ -1,0 +1,75 @@
+{
+  "nodes": [
+    {
+      "id": "225",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 400,
+      "height": 120,
+      "text": "#### ➡️ updateOne() (초세부 그림)\n\n| C | 메서드 |\n|---|--------|\n| T | void |\n| F | Todo 수정 |\n| P | Todo 정보 갱신 |\n| R | DAO.updateOne(), DTO |\n\n**이 다이어그램은 updateOne() 메서드의 선언, 변수, 로직, 코드, 각 코드 라인별 해설, 테스트, 실행 예시, 만화적 해설, 상호 링크를 모두 포함합니다.**"
+    },
+    {
+      "id": "2251",
+      "type": "text",
+      "x": 500,
+      "y": -100,
+      "width": 350,
+      "height": 120,
+      "text": "##### 선언부\n```java\npublic void updateOne(TodoDTO todoDTO)\n```"
+    },
+    {
+      "id": "2252",
+      "type": "text",
+      "x": 500,
+      "y": 50,
+      "width": 350,
+      "height": 120,
+      "text": "##### 주요 변수/타입\n- TodoDTO todoDTO\n- TodoVO vo"
+    },
+    {
+      "id": "2253",
+      "type": "text",
+      "x": 500,
+      "y": 200,
+      "width": 350,
+      "height": 180,
+      "text": "##### 주요 동작(로직)\n1. DTO → VO 변환\n2. DAO.updateOne(vo) 호출"
+    },
+    {
+      "id": "2254",
+      "type": "text",
+      "x": 950,
+      "y": 0,
+      "width": 400,
+      "height": 320,
+      "text": "##### 코드 라인별 해설\n```java\nTodoVO vo = TodoVO.builder()\n    .tno(todoDTO.getTno())\n    .title(todoDTO.getTitle())\n    .dueDate(LocalDate.parse(todoDTO.getDueDate()))\n    .finished(todoDTO.isFinished())\n    .build(); /* 1. DTO → VO 변환 */\ntodoDAO.updateOne(vo); /* 2. DAO에 VO 전달하여 DB에 수정 반영 */\n```\n- 각 라인별로 어떤 동작/의미/상태 변화가 있는지 주석으로 해설"
+    },
+    {
+      "id": "2255",
+      "type": "text",
+      "x": 950,
+      "y": 350,
+      "width": 400,
+      "height": 120,
+      "text": "##### 테스트/실행 예시\n- 단위 테스트: updateOne() 호출 시 DB의 Todo 정보가 정상적으로 수정되는지 확인\n- 실행 결과 예시: [실행 로그/테스트 코드로 이동](obsidian://open?file=cf_todo_service_updateOne_method_test.md)"
+    },
+    {
+      "id": "2256",
+      "type": "text",
+      "x": 950,
+      "y": 500,
+      "width": 400,
+      "height": 180,
+      "text": "##### 만화적 해설/스토리텔링\n- 사용자가 Todo 수정을 요청하면,\n- 컨트롤러가 서비스의 updateOne()을 호출하고,\n- 서비스는 DTO를 VO로 변환하여 DAO에 전달,\n- DAO는 DB에 수정 반영,\n- 수정이 완료되면 컨트롤러가 결과를 사용자에게 안내.\n\n[상위 구조로 이동](obsidian://open?file=cf_todo_service_canvas.json)"
+    }
+  ],
+  "edges": [
+    { "id": "e1", "fromNode": "225", "fromSide": "right", "toNode": "2251", "toSide": "left", "label": "| 선언 |" },
+    { "id": "e2", "fromNode": "225", "fromSide": "right", "toNode": "2252", "toSide": "left", "label": "| 변수/타입 |" },
+    { "id": "e3", "fromNode": "225", "fromSide": "right", "toNode": "2253", "toSide": "left", "label": "| 주요 동작 |" },
+    { "id": "e4", "fromNode": "225", "fromSide": "right", "toNode": "2254", "toSide": "left", "label": "| 코드/해설 |" },
+    { "id": "e5", "fromNode": "225", "fromSide": "right", "toNode": "2255", "toSide": "left", "label": "| 테스트/실행 |" },
+    { "id": "e6", "fromNode": "225", "fromSide": "right", "toNode": "2256", "toSide": "left", "label": "| 해설/스토리 |" }
+  ]
+} 
