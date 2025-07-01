@@ -1,0 +1,451 @@
+Lombok 라이브러리.
+: get/set/toString/equals/생성자/빌더 패턴. 등 반자동,
+도구를 미리 설치후, 메모리 상에서 띄워서 사용함.
+사용법은 @getter , 어노테이션만 붙이면, 바로 사용가능함.
+
+단점,
+특정 라이브러리에 종속(의존한다.)이 된다.
+
+
+설치,
+build.gradle 파일에서
+
+//롬복 라이브러리 설치
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
+    // test, 단위 테스트에서도, 사용하기.
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
+// 검색
+// https://mvnrepository.com/artifact/org.projectlombok/lombok
+compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.36'
+
+
+
+확인.
+예)
+@getter , 어노테이션만 붙이면, 바로 사용가능함.
+
+ //원래 우리가 인스턴스 생성 방법
+    //TodoVO Todo = new TodoVO();
+    TodoVO todoVO = new TodoVO();
+    todoVO.setTno(200L);
+    todoVO.setTitle("제목200");
+    todoVO.setDueDate(LocalDate.now());
+
+    System.out.println(todoVO);
+
+    TodoVO todo = TodoVO.builder()
+        .tno(100L)
+        .title("제목100")
+        .dueDate(LocalDate.now())
+        .build();
+
+    System.out.println(todo);
+ --------------------------------------------------------
+ 자주 사용하는 옵션 설명 예시,
+ # Lombok 라이브러리의 주요 어노테이션 개념 및 예시
+
+ Lombok은 Java 개발에서 반복적인 보일러플레이트 코드를 줄여주는 라이브러리로, 어노테이션을 통해 컴파일 시점에 필요한 메소드를 자동으로 생성합니다. 아래에서 가장 자주 사용되는 Lombok 어노테이션들을 개념과 함께 설명해 드리겠습니다.
+
+ ## 1. @Getter와 @Setter
+
+ **개념**: 클래스의 필드에 대한 getter와 setter 메소드를 자동 생성합니다.
+
+ **예시**:
+ ```java
+ import lombok.Getter;
+ import lombok.Setter;
+
+ public class User {
+     @Getter @Setter
+     private String name;
+
+     @Getter
+     private final String id; // final 필드는 setter가 생성되지 않습니다
+
+     // 클래스 레벨에도 적용 가능
+     public User(String name, String id) {
+         this.name = name;
+         this.id = id;
+     }
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ public String getName() {
+     return this.name;
+ }
+
+ public void setName(String name) {
+     this.name = name;
+ }
+
+ public String getId() {
+     return this.id;
+ }
+ ```
+
+ ## 2. @ToString
+
+ **개념**: `toString()` 메소드를 자동으로 생성하여 객체의 필드 값을 문자열로 반환합니다.
+
+ **예시**:
+ ```java
+ import lombok.ToString;
+
+ @ToString(exclude = "password") // password 필드는 제외
+ public class User {
+     private String username;
+     private String email;
+     private String password;
+
+     // 생성자 등 다른 코드 생략
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ @Override
+ public String toString() {
+     return "User(username=" + this.username + ", email=" + this.email + ")";
+ }
+ ```
+
+ ## 3. @EqualsAndHashCode
+
+ **개념**: `equals()`와 `hashCode()` 메소드를 자동 생성합니다.
+
+ **예시**:
+ ```java
+ import lombok.EqualsAndHashCode;
+
+ @EqualsAndHashCode(of = {"id"}) // id 필드만 사용하여 비교
+ public class Product {
+     private Long id;
+     private String name;
+     private double price;
+
+     // 생성자 등 다른 코드 생략
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ @Override
+ public boolean equals(Object o) {
+     if (o == this) return true;
+     if (!(o instanceof Product)) return false;
+     Product other = (Product) o;
+     if (!other.canEqual((Object)this)) return false;
+     if (this.id == null ? other.id != null : !this.id.equals(other.id)) return false;
+     return true;
+ }
+
+ @Override
+ public int hashCode() {
+     final int PRIME = 59;
+     int result = 1;
+     result = (result * PRIME) + (this.id == null ? 43 : this.id.hashCode());
+     return result;
+ }
+
+ protected boolean canEqual(Object other) {
+     return other instanceof Product;
+ }
+ ```
+
+ ## 4. @NoArgsConstructor, @AllArgsConstructor, @RequiredArgsConstructor
+
+ **개념**: 다양한 생성자를 자동으로 생성합니다.
+
+ **예시**:
+ ```java
+ import lombok.AllArgsConstructor;
+ import lombok.NoArgsConstructor;
+ import lombok.RequiredArgsConstructor;
+ import lombok.NonNull;
+
+ @NoArgsConstructor // 파라미터 없는 생성자
+ @AllArgsConstructor // 모든 필드에 대한 생성자
+ public class Item {
+     private Long id;
+     @NonNull private String name; // null이 될 수 없는 필드
+     private double price;
+ }
+
+ @RequiredArgsConstructor // @NonNull 필드나 final 필드만을 파라미터로 하는 생성자
+ class Category {
+     private Long id;
+     @NonNull private String name;
+     private final String code;
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ // @NoArgsConstructor로 생성
+ public Item() {
+ }
+
+ // @AllArgsConstructor로 생성
+ public Item(Long id, String name, double price) {
+     this.id = id;
+     this.name = name;
+     this.price = price;
+ }
+
+ // @RequiredArgsConstructor로 생성
+ public Category(String name, String code) {
+     if (name == null) throw new NullPointerException("name is marked @NonNull but is null");
+     this.name = name;
+     this.code = code;
+ }
+ ```
+
+ ## 5. @Data
+
+ **개념**: @Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor를 모두 포함하는 복합 어노테이션입니다.
+
+ **예시**:
+ ```java
+ import lombok.Data;
+ import lombok.NonNull;
+
+ @Data
+ public class Customer {
+     private Long id;
+     @NonNull private String name;
+     private String email;
+     private String address;
+ }
+ ```
+
+ **생성되는 코드**: 위에서 언급한 모든 메소드(getter, setter, toString, equals, hashCode, 필수 생성자)가 생성됩니다.
+
+ ## 6. @Builder
+
+ **개념**: 빌더 패턴을 구현한 코드를 자동 생성합니다.
+
+ **예시**:
+ ```java
+ import lombok.Builder;
+ import lombok.ToString;
+
+ @Builder
+ @ToString
+ public class Order {
+     private Long id;
+     private String customerName;
+     private String product;
+     private int quantity;
+     private double price;
+ }
+ ```
+
+ **사용 방법**:
+ ```java
+ 전(기본 인스턴스 생성)
+ Order order = new Order();
+ order.setName();
+ order.setPassword();
+
+ 후
+ Order order = Order.builder()
+         .id(1L)
+         .customerName("John Doe")
+         .product("Laptop")
+         .quantity(2)
+         .price(1000.0)
+         .build();
+ ```
+
+ ## 7. @Slf4j
+
+ **개념**: 로깅을 위한 SLF4J Logger 객체를 자동으로 생성합니다.
+
+ **예시**:
+ ```java
+ import lombok.extern.slf4j.Slf4j;
+
+ @Slf4j
+ public class UserService {
+
+     public void registerUser(String username) {
+         log.info("Registering user: {}", username);
+         // 비즈니스 로직 구현
+         log.debug("User registration process completed for: {}", username);
+     }
+
+     public void processError() {
+         try {
+             // 오류 발생 가능성이 있는 코드
+         } catch (Exception e) {
+             log.error("Error occurred while processing data", e);
+         }
+     }
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserService.class);
+ ```
+
+ ## 8. @Value
+
+ **개념**: 불변(immutable) 객체를 생성합니다. 모든 필드가 private과 final로 설정됩니다.
+
+ **예시**:
+ ```java
+ import lombok.Value;
+
+ @Value
+ public class ImmutableUser {
+     String id;
+     String name;
+     String email;
+
+     // 모든 필드는 private final이 되며, getter만 생성됩니다
+ }
+ ```
+
+ ## 9. @Cleanup
+
+ **개념**: 자원을 자동으로 닫아주는 try-with-resources 문법과 유사한 기능을 제공합니다.
+
+ **예시**:
+ ```java
+ import lombok.Cleanup;
+ import java.io.*;
+
+ public class FileProcessor {
+     public void processFile(String path) throws IOException {
+         @Cleanup InputStream is = new FileInputStream(path);
+         @Cleanup OutputStream os = new FileOutputStream(path + ".processed");
+
+         byte[] buffer = new byte[1024];
+         int r;
+         while ((r = is.read(buffer)) != -1) {
+             os.write(buffer, 0, r);
+         }
+         // is와 os는 메소드 종료 시 자동으로 close() 메소드가 호출됩니다
+     }
+ }
+ ```
+
+ **생성되는 코드**:
+ ```java
+ public void processFile(String path) throws IOException {
+     InputStream is = new FileInputStream(path);
+     try {
+         OutputStream os = new FileOutputStream(path + ".processed");
+         try {
+             byte[] buffer = new byte[1024];
+             int r;
+             while ((r = is.read(buffer)) != -1) {
+                 os.write(buffer, 0, r);
+             }
+         } finally {
+             if (os != null) os.close();
+         }
+     } finally {
+         if (is != null) is.close();
+     }
+ }
+ ```
+
+ ## 10. @SneakyThrows
+
+ **개념**: 검사 예외(checked exception)를 비검사 예외처럼 처리할 수 있게 해줍니다.
+
+ **예시**:
+ ```java
+ import lombok.SneakyThrows;
+ import java.io.IOException;
+ import java.io.UncheckedIOException;
+
+ public class ExceptionHandler {
+
+     @SneakyThrows
+     public void readFile(String path) {
+         // IOException이 발생할 수 있지만 메소드 선언에 throws를 명시하지 않아도 됨
+         java.nio.file.Files.readAllLines(java.nio.file.Paths.get(path));
+     }
+
+     @SneakyThrows(UncheckedIOException.class)
+     public void processData() {
+         // 특정 예외만 처리
+         // 비즈니스 로직
+     }
+ }
+ ```
+
+ ## 실무에서의 조합 사용 예시
+
+ Spring Boot 애플리케이션에서 Lombok을 활용한 실제 엔티티 클래스 예시:
+
+ ```java
+ import lombok.*;
+ import javax.persistence.*;
+ import java.time.LocalDateTime;
+ import java.util.ArrayList;
+ import java.util.List;
+
+ @Entity
+ @Table(name = "orders")
+ @Getter @Setter
+ @NoArgsConstructor
+ @ToString(exclude = {"customer", "orderItems"})
+ @EqualsAndHashCode(of = "id")
+ public class Order {
+
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
+
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name = "customer_id")
+     private Customer customer;
+
+     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+     private List<OrderItem> orderItems = new ArrayList<>();
+
+     private LocalDateTime orderDate;
+
+     private OrderStatus status;
+
+     @Builder
+     public Order(Customer customer, LocalDateTime orderDate, OrderStatus status) {
+         this.customer = customer;
+         this.orderDate = orderDate;
+         this.status = status;
+     }
+
+     // 비즈니스 메소드
+     public void addOrderItem(OrderItem orderItem) {
+         orderItems.add(orderItem);
+         orderItem.setOrder(this);
+     }
+
+     public void cancel() {
+         this.status = OrderStatus.CANCELED;
+     }
+ }
+ ```
+
+ ## 주의사항
+
+ 1. **과도한 사용 지양**: `@Data`와 같은 복합 어노테이션은 편리하지만 때로는 불필요한 메소드까지 생성할 수 있습니다.
+
+ 2. **JPA 엔티티에서의 주의**: `@EqualsAndHashCode`와 `@ToString` 사용 시 무한 재귀 호출 문제가 발생할 수 있으므로, 양방향 연관관계에서는 `exclude` 옵션을 사용하세요.
+
+ 3. **생성된 코드 이해**: Lombok이 생성하는 코드를 이해하고, 필요에 맞게 커스터마이징하세요.
+
+ 4. **IDE 플러그인**: IntelliJ IDEA 또는 Eclipse를 사용할 때 Lombok 플러그인 설치가 필요합니다.
+
+ Lombok 라이브러리는 코드를 더 간결하고 가독성 있게 만들어주는 강력한 도구이지만, 적절한 이해와 사용이 중요합니다.

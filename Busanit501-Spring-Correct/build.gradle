@@ -1,0 +1,70 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.busanit501'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    junitVersion = '5.10.2'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    // 외부 기능 탑재
+    // JSTL, 자바 문법을 간결히 해서, 화면상에서 이용하는 도구.
+    // jsp 가 아닌, html 타임리프를 이용할 예정. 거의 비슷함.
+    // mvnRepository 사이트에서, 라이브러리 검색 방법.
+    //
+    // 1
+    //jstl 추가,
+    // https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl
+    // 리프레쉬 하기.
+    implementation group: 'jstl', name: 'jstl', version: '1.2'
+
+    // 2
+    // 마리아디비 연결 도구.
+    // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.5.3'
+
+    // 3
+    // lombok , get/set/toString/ 기본 기능 편의 도구.
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    // 기본 설정 참고, 버전만 확인
+    //    implementation 'org.projectlombok:lombok:1.18.38'
+
+    // 컴파일 단위, 테스트 단위, 2개 설정 예시
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+
+    // test, 단위 테스트에서도, 사용하기.
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+
+    // 4,
+    // Hikari CP, 디비 연결시, 사용하는 도구,
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '6.3.0'
+
+}
+
+test {
+    useJUnitPlatform()
+}

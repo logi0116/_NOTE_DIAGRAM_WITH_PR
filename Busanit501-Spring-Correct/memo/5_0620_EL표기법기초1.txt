@@ -1,0 +1,27 @@
+#EL 표기법 , 기본,
+-> HTML 화면 파일에서, 서버로부터 전달 받은 데이터 처리 쉽게 하자.
+#(Expression Language)
+
+#표현식, 기본 문법
+${expression} -> 쉽게 표현, 1) 값 가져오기, 2) 값 처리, 3 )반복문을 이용한다 거나,
+1) 값 가져오기
+예시) ${param.num1}
+
+# 속성 접근
+점(.) 또는 대괄호([]) -> 서버로부터 데이터를 담고 있는 객체를 받아서, 화면에서 꺼내 쓰자.
+ex)
+${bean.property}
+${bean["property"]}
+
+# 기본 옵션 종류,
+| 객체명                | 설명                       |
+| ------------------ | ------------------------ |
+| `param`            | 요청 파라미터 이름 → 단일 문자열 값 매핑 |
+| `paramValues`      | 요청 파라미터 이름 → 문자열 배열 매핑   |
+| `header`           | 요청 헤더 이름 → 단일 문자열 값 매핑   |
+| `headerValues`     | 요청 헤더 이름 → 문자열 배열 매핑     |
+| `cookie`           | 쿠키 이름 → `Cookie` 객체 매핑   |
+| `pageScope`        | `pageContext` 스코프(속성) 접근 |
+| `requestScope`     | `request` 스코프(속성) 접근     |
+| `sessionScope`     | `session` 스코프(속성) 접근     |
+| `applicationScope` | `application` 스코프(속성) 접근 |

@@ -1,0 +1,420 @@
+Connection Pool,
+: 디비에 연결 하기 위한 자원 소모가 많음.
+그래서, 매번 연결시마다 connection 만들기 보다,
+미리 몇개를 만들어서, 재사용.
+예시)
+자바 String str = "lsy"
+기본 문자열은 변경 불가.
+str + "234", 새로운 문자열 생성, 새 메모리 또 사용했다.
+
+StringBuffer, 변경가능.
+str + "234", 기존 문자열에 추가. 기존 메모리 재사용.
+
+종류가, 여러가지,
+DBCP, C3PO, 라이브러리, 커넥션 풀 관련 기능들,
+그중에서, HikariCP 라이브러리 이용해서,
+접근시 자원을 소모를 줄이겠다.
+재사용해서,
+자원 효율적으로 사용가능, 성능도 좋아짐.
+
+도구 이용하기 위해서, build.gradle 설치 후, 적용하기.
+
+  //Hikari Cp 설치
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
+
+    // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '6.2.1'
+
+-------------------------------------------------------------
+# HikariCP 개념 및 설명
+
+## HikariCP란?
+
+HikariCP는 가볍고 빠르며 안정적인 JDBC 커넥션 풀(Connection Pool) 라이브러리입니다. "Hikari"는 일본어로 "빛"을 의미하며, 이름처럼 매우 빠른 성능을 자랑합니다. Brett Wooldridge가 개발한 이 라이브러리는 현재 Spring Boot 2.0 이상 버전에서 기본 커넥션 풀로 채택되었습니다.
+
+## 커넥션 풀(Connection Pool)의 필요성
+
+데이터베이스 연결은 비용이 많이 드는 작업입니다:
+1. TCP 소켓 연결
+2. 데이터베이스 인증
+3. 권한 검사
+4. 연결 상태 설정
+
+매 요청마다 이 과정을 반복하면 성능 저하가 발생합니다. 커넥션 풀은 미리 연결을 생성하고 재사용하여 이 문제를 해결합니다.
+
+## HikariCP의 특징
+
+1. **높은 성능**
+   - 최적화된 코드로 다른 커넥션 풀보다 빠릅니다.
+   - 벤치마크 테스트에서 Commons DBCP, C3P0 등 타 라이브러리보다 우수한 성능을 보입니다.
+
+2. **간결한 설정**
+   - 최소한의 설정으로 높은 성능을 제공합니다.
+   - 합리적인 기본값을 제공하여 별도 튜닝 없이도 잘 작동합니다.
+
+3. **안정성**
+   - 철저한 테스트와 검증을 거친 코드베이스
+   - 커넥션 누수(Connection Leak) 방지 기능 내장
+
+4. **모니터링**
+   - JMX를 통한 모니터링 기능 제공
+   - 상세한 메트릭 정보 제공
+
+## 주요 설정 옵션
+
+| 설정 | 설명 | 기본값 | 권장값 |
+|------|------|--------|--------|
+| `minimumIdle` | 풀에서 유지할 최소 유휴 연결 수 | 10 | 애플리케이션에 맞게 설정 |
+| `maximumPoolSize` | 풀이 가질 수 있는 최대 연결 수 | 10 | (코어 수 × 2) + 효과적인 디스크 수 |
+| `connectionTimeout` | 클라이언트가 연결을 기다리는 최대 시간(ms) | 30000 (30초) | 기본값 권장 |
+| `idleTimeout` | 연결이 풀에서 유휴 상태로 있을 수 있는 최대 시간(ms) | 600000 (10분) | 기본값 권장 |
+| `maxLifetime` | 연결의 최대 수명(ms) | 1800000 (30분) | DB의 연결 타임아웃보다 짧게 설정 |
+| `autoCommit` | 자동 커밋 모드 설정 | true | 애플리케이션에 맞게 설정 |
+
+## 코드 예제
+
+### 1. 기본 설정 (Java 코드)
+
+```java
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+public class DatabaseConfig {
+
+    public HikariDataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+        config.setUsername("username");
+        config.setPassword("password");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        // 추가 설정
+        config.setMinimumIdle(5);
+        config.setMaximumPoolSize(10);
+        config.setIdleTimeout(300000);
+        config.setMaxLifetime(1200000);
+        config.setConnectionTestQuery("SELECT 1");
+
+        return new HikariDataSource(config);
+    }
+}
+```
+
+### 2. Spring Boot에서 HikariCP 설정 (application.properties)
+
+```properties
+# 데이터소스 기본 설정
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=username
+spring.datasource.password=password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# HikariCP 설정
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.max-lifetime=1200000
+spring.datasource.hikari.connection-timeout=30000
+spring.datasource.hikari.pool-name=MyHikariPool
+```
+
+### 3. Spring Boot에서 HikariCP 설정 (application.yml)
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: username
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      connection-timeout: 30000
+      pool-name: MyHikariPool
+```
+
+## HikariCP의 작동 방식
+
+1. **연결 획득 프로세스**:
+   - 애플리케이션이 커넥션을 요청합니다.
+   - 풀에 유휴 연결이 있으면 즉시 제공됩니다.
+   - 유휴 연결이 없고 풀이 가득 찼으면 `connectionTimeout` 시간 동안 대기합니다.
+   - 시간 초과되면 `SQLException`이 발생합니다.
+
+2. **연결 반환 프로세스**:
+   - 애플리케이션이 연결 사용을 마치면 풀로 반환됩니다.
+   - 연결은 유휴 상태가 되고 다시 사용할 수 있게 됩니다.
+   - `idleTimeout` 시간 동안 사용되지 않으면 연결이 종료됩니다(단, `minimumIdle` 이상은 유지).
+
+3. **연결 유효성 검사**:
+   - 풀에서 연결을 가져올 때 유효성을 검사합니다.
+   - 필요에 따라 `connectionTestQuery` 또는 JDBC4 isValid() 메서드를 사용합니다.
+
+## 성능 최적화 팁
+
+1. **적절한 풀 크기 설정**:
+   - 공식: `connections = ((core_count * 2) + effective_spindle_count)`
+   - 코어 수와 디스크 수를 고려하여 설정합니다.
+
+2. **준비된 문장(Prepared Statement) 캐싱 활용**:
+   - `prepStmtCacheSize` 및 `prepStmtCacheSqlLimit` 설정을 통해 SQL 문장 재사용을 최적화합니다.
+
+3. **연결 테스트 최소화**:
+   - 필요한 경우에만 연결 유효성을 검사합니다.
+   - JDBC4 isValid() 메서드 사용이 더 효율적입니다.
+
+4. **maxLifetime 설정**:
+   - 데이터베이스의 연결 타임아웃보다 짧게 설정하여 "stale connection" 문제를 방지합니다.
+
+## 실제 사용 예제: Spring Boot + HikariCP + JPA
+
+```java
+@Service
+public class UserService {
+
+    private final EntityManager entityManager;
+
+    @Autowired
+    public UserService(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    @Transactional
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
+    }
+
+    @Transactional
+    public List<User> findAllUsers() {
+        return entityManager.createQuery("SELECT u FROM User u", User.class)
+            .getResultList();
+    }
+
+    @Transactional
+    public void saveUser(User user) {
+        entityManager.persist(user);
+    }
+}
+```
+
+## 모니터링
+
+HikariCP는 JMX를 통해 다음과 같은 메트릭을 제공합니다:
+
+- `activeConnections`: 현재 활성 연결 수
+- `idleConnections`: 현재 유휴 연결 수
+- `totalConnections`: 총 연결 수
+- `threadsAwaitingConnection`: 연결을 기다리는 스레드 수
+- `connectionTimeoutCount`: 연결 시간 초과 횟수
+
+Spring Boot Actuator와 함께 사용하면 더 쉽게 모니터링할 수 있습니다.
+
+## 결론
+
+HikariCP는 성능, 안정성, 사용 편의성의 균형을 잘 맞춘 JDBC 커넥션 풀 라이브러리입니다. 특히 Spring Boot 애플리케이션에서 기본으로 사용되며, 최소한의 설정으로도 높은 성능을 발휘합니다. 대규모 애플리케이션에서는 환경에 맞는 적절한 풀 크기와 타임아웃 설정이 중요합니다.
+==================================================================
+옵션 관련 메모,
+# HikariCP의 PreparedStatement 캐시 옵션 설정 개념 및 설명
+
+## PreparedStatement 캐시 옵션의 개념
+
+HikariCP에서 제공하는 PreparedStatement 캐시 옵션은 SQL 쿼리 실행 성능을 크게 향상시키는 중요한 기능입니다. 이 옵션들은 HikariCP 자체 기능이 아니라 JDBC 드라이버(특히 MySQL)에 전달되는 속성으로, 데이터베이스 연결당 PreparedStatement 객체를 캐싱하여 재사용함으로써 성능을 최적화합니다.
+
+## 주요 PreparedStatement 캐시 옵션 설명
+
+### 1. cachePrepStmts (캐시 활성화)
+
+```java
+config.addDataSourceProperty("cachePrepStmts", "true");
+```
+
+- **개념**: PreparedStatement 캐싱 기능을 활성화하는 기본 옵션입니다.
+- **기본값**: 대부분의 JDBC 드라이버에서 `false`
+- **효과**: 이 옵션을 `true`로 설정하면 JDBC 드라이버는 자주 사용되는 PreparedStatement를 캐시하기 시작합니다.
+- **작동 방식**: SQL 문이 파싱되고 컴파일되는 과정을 한 번만 수행하고 이후 동일한 SQL은 캐시에서 재사용합니다.
+- **중요성**: 이 옵션이 `false`면 다른 캐시 관련 설정은 효과가 없습니다.
+
+### 2. prepStmtCacheSize (캐시 크기)
+
+```java
+config.addDataSourceProperty("prepStmtCacheSize", "250");
+```
+
+- **개념**: 각 연결(Connection)당 캐시할 수 있는 PreparedStatement의 최대 개수입니다.
+- **기본값**: 일반적으로 JDBC 드라이버에서 매우 작은 값(25 이하)으로 설정됨
+- **권장 값**: 애플리케이션에서 사용하는 고유 SQL 문의 수에 따라 결정 (일반적으로 250-500)
+- **효과**: 이 값을 늘리면 더 많은 다양한 SQL 문이 캐시될 수 있습니다.
+- **메모리 영향**: 값이 클수록 메모리 사용량이 증가하지만, 현대 시스템에서 250-500 정도의 PreparedStatement를 저장하는 것은 큰 부담이 아닙니다.
+
+### 3. prepStmtCacheSqlLimit (SQL 문 크기 제한)
+
+```java
+config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+```
+
+- **개념**: 캐시할 수 있는 SQL 문의 최대 길이(문자 수)입니다.
+- **기본값**: 일반적으로 JDBC 드라이버에서 작은 값(256 이하)으로 설정됨
+- **권장 값**: 복잡한 쿼리를 사용하는 경우 2048 이상으로 설정 (최대 4096)
+- **효과**: 이 값보다 긴 SQL 문은 캐시되지 않습니다.
+- **고려사항**: 너무 큰 값은 메모리 사용량을 증가시키지만, 복잡한 쿼리 또는 동적으로 생성되는 큰 IN 절을 사용하는 경우 유용합니다.
+
+## 작동 방식 상세 설명
+
+1. **PreparedStatement 생성 프로세스**:
+   - 일반적인 과정: SQL 파싱 → 구문 검사 → 실행 계획 생성 → 컴파일 → 실행
+   - 캐시 사용 시: 이미 처리된 PreparedStatement를 재사용하여 처음 세 단계 건너뜀
+
+2. **캐싱 메커니즘**:
+   - 각 데이터베이스 연결은 자체 PreparedStatement 캐시를 유지
+   - SQL 문이 처음 실행되면 캐시에 저장
+   - 동일한 SQL이 다시 실행되면 캐시에서 검색하여 재사용
+
+3. **성능 향상 요소**:
+   - SQL 파싱 오버헤드 감소
+   - 데이터베이스 서버의 쿼리 최적화 및 실행 계획 재사용
+   - 네트워크 트래픽 감소 (바인딩 변수만 전송)
+   - 가비지 컬렉션 부하 감소
+
+## 설정 예제 (전체 코드 컨텍스트)
+
+```java
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+public class DatabaseConfig {
+
+    public HikariDataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+
+        // 기본 연결 설정
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+        config.setUsername("username");
+        config.setPassword("password");
+        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+
+        // 풀 설정
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(5);
+        config.setIdleTimeout(300000);
+        config.setConnectionTimeout(30000);
+
+        // PreparedStatement 캐시 설정
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+        // 추가적인 성능 최적화 옵션 (MySQL 특화)
+        config.addDataSourceProperty("useServerPrepStmts", "true");
+        config.addDataSourceProperty("useLocalSessionState", "true");
+        config.addDataSourceProperty("rewriteBatchedStatements", "true");
+        config.addDataSourceProperty("cacheResultSetMetadata", "true");
+        config.addDataSourceProperty("cacheServerConfiguration", "true");
+        config.addDataSourceProperty("elideSetAutoCommits", "true");
+        config.addDataSourceProperty("maintainTimeStats", "false");
+
+        return new HikariDataSource(config);
+    }
+}
+```
+
+## Spring Boot 설정 방법
+
+### application.properties
+
+```properties
+# 기본 연결 설정
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=username
+spring.datasource.password=password
+
+# HikariCP 설정
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+
+# PreparedStatement 캐시 설정
+spring.datasource.hikari.data-source-properties.cachePrepStmts=true
+spring.datasource.hikari.data-source-properties.prepStmtCacheSize=250
+spring.datasource.hikari.data-source-properties.prepStmtCacheSqlLimit=2048
+
+# 추가 MySQL 최적화 옵션
+spring.datasource.hikari.data-source-properties.useServerPrepStmts=true
+spring.datasource.hikari.data-source-properties.useLocalSessionState=true
+```
+
+### application.yml
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+    username: username
+    password: password
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        useLocalSessionState: true
+```
+
+## 성능 영향 분석
+
+### 1. 캐시 활성화 전후 성능 비교
+
+| 설정 | DB 호출 시간 (ms) | CPU 사용량 | 메모리 사용량 |
+|------|-----------------|----------|------------|
+| 캐시 비활성화 | 10-15 ms | 높음 | 낮음 |
+| 캐시 활성화 | 2-5 ms | 낮음 | 약간 증가 |
+
+### 2. 적정 캐시 크기 설정 가이드라인
+
+- **소규모 애플리케이션**: prepStmtCacheSize = 50-100
+- **중규모 애플리케이션**: prepStmtCacheSize = 150-250
+- **대규모 애플리케이션**: prepStmtCacheSize = 300-500
+
+### 3. 캐시 크기와 SQL 제한 크기의 상관관계
+
+- `prepStmtCacheSize`가 크면 더 많은 고유 쿼리를 캐싱할 수 있지만 메모리 사용량이 증가
+- `prepStmtCacheSqlLimit`이 크면 더 복잡한 쿼리도 캐싱할 수 있지만 메모리 사용량이 증가
+
+## 최적화 권장사항
+
+1. **모든 애플리케이션에서 기본 설정**
+   ```java
+   config.addDataSourceProperty("cachePrepStmts", "true");
+   config.addDataSourceProperty("prepStmtCacheSize", "250");
+   config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+   ```
+
+2. **복잡한 쿼리가 많은 애플리케이션**
+   ```java
+   config.addDataSourceProperty("prepStmtCacheSize", "500");
+   config.addDataSourceProperty("prepStmtCacheSqlLimit", "4096");
+   ```
+
+3. **리소스가 제한된 환경**
+   ```java
+   config.addDataSourceProperty("prepStmtCacheSize", "100");
+   config.addDataSourceProperty("prepStmtCacheSqlLimit", "1024");
+   ```
+
+## 주의사항
+
+1. **메모리 사용량 모니터링**: 캐시 크기를 너무 크게 설정하면 메모리 사용량이 증가할 수 있습니다.
+
+2. **데이터베이스 서버 설정 확인**: MySQL의 경우 `max_prepared_stmt_count` 서버 설정도 확인해야 합니다.
+
+3. **동적 SQL 사용 시 주의**: 매번 다른 형태로 생성되는 동적 SQL은 캐싱 효과가 제한적일 수 있습니다.
+
+4. **캐시 관련 지표 모니터링**: 캐시 히트율과 메모리 사용량을 모니터링하여 설정을 조정하는 것이 좋습니다.
+
+## 결론
+
+HikariCP의 PreparedStatement 캐시 옵션은 데이터베이스 연결 풀의 성능을 크게 향상시킬 수 있는 중요한 설정입니다. `cachePrepStmts`, `prepStmtCacheSize`, `prepStmtCacheSqlLimit` 옵션을 적절히 설정하면 SQL 쿼리 실행 속도를 개선하고 데이터베이스 서버의 부하를 줄일 수 있습니다. 애플리케이션의 특성과 리소스 환경에 맞게 이러한 설정을 조정하여 최적의 성능을 달성하는 것이 중요합니다.

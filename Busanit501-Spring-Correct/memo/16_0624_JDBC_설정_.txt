@@ -1,0 +1,97 @@
+#샘플디비
+select now();
+
+create table tbl_todo (
+                          tno int auto_increment primary key,
+                          title varchar(100) not null,
+                          dueDate date not null,
+                          finished tinyint default 0
+);
+
+insert into tbl_todo (title, dueDate, finished) values ('샘플1','2024-05-16',1);
+insert into tbl_todo (title, dueDate) values ('점심 뭐 먹지?국밥','2024-05-21');
+
+# 전체 보기
+select * from tbl_todo;
+# 하나의 글 보기, 상세보기
+select * from tbl_todo where tno = 2;
+select * from tbl_todo where tno < 10;
+
+update tbl_todo set finished = 0, title = '샘플1수정', dueDate = now() where tno = 4;
+
+delete from tbl_todo where tno > 5;
+
+# 기본 설정 방법
+마리아 디비 설치 후,
+웹 (jsp) 프로젝트 연결하기.
+
+1. build.gradle 파일안에
+// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '3.5.1'
+
+해당 설치 경로 추가 하고, 새로고침 코끼리 클릭.
+
+2. jdbc 연결 구조.
+1) 네트워크 이용해서 디비랑 연결을 맺기.
+2) 디비에 SQL을 전달.
+3) crud, 조회시 결과를 받거나, 또는 추가, 수정, 삭제 등 함.
+4) 디비 사용후에는 자원 반납.
+
+정형화된 데이터 (SQL) , 은행권.무결성 100%보장.
+
+종류)오라클, 마리아디비
+
+엑셀 같은 테이블
+장점,
+간단한 구조에서, 기본 , crud 등 매우 빠르다.
+단점,
+빅데이터 저장 매체로 사용시, 비용이 엄청 많이 들고, 효율도 없다.
+vs
+비정형화된 데이터(NoSQL= Not Only SQL)
+
+종류: 몽고디비(키,값 구조로), 구글 (서버리스 제공, 파이어베이스 )
+
+테이블, 이미지, 음성, 영상 등.
+장점,
+sql 처럼 틀에 메이지 않는다.
+빅데이터 관련 저장을 하기 위해서 설계했다.
+구축 비용이 매우 저렴하고, 효율적이다.
+단점.
+sql 만큼, 무결성보장이 보수적이지 않다.
+예)
+ 영상, 화질이 사람이 볼수있는 화질의 한계가 있다.
+ 그래서, 특정의 픽셀이 조금 깨져도, 그리 티가 안남.
+ 음성, 100%, 90% 정도만 데이터가 넘어가도 의사소통 다 됨.
+
+--------------------------------------------------------
+마리아 디비, 데이터 구조, 가장작은, 가장 큰것,
+문자열, 숫자, 데이터 타입에대해서 메모.
+
+정수, 타입.
+1) TINYINT : 매우 작은 정수, 1byte , -128 ~ 127
+2) INT : 4byte , 범위 는 생략, - 2^31 ~
+3) BIGINT : 8byte, 범위는 생략, 약 -2^63 ~
+소수
+4) FLOAT : 4byte ,
+5) DOUBLE : 8byte
+
+날짜, 타입
+1) DATE , 3byte, yyyy-mm-dd
+2) DATETIME, 8byte yyyy-mm-dd - hh:mm:ss
+3) TIME , 3byte, hh:mm:ss
+
+문자열 타입.
+1)VARCHAR(n) : Length + 1 byte ,
+2)TEXT : 최대 크기 64바이트
+3)LONGTEXT : 최대크기 4GB
+4)BLOB(Binary Large Oboject) : 최대 크기 64kb, 음성, 이미지, 영상, 꾸역꾸역 넣어서,
+힘들게 불러옴. -> 미디어 서버에게 위임할것.
+5)LONGBLOB : 최대 크기 4GB
+
+결론, 디비 설계시,
+회원 수가, 우리 규모는 : 1000명 미만이라서, 해당 게시글의 숫자는 백만정도만 계산해서
+딱 잘라서 설계하면 , 나중에 확장시 더 머리가 아프다.
+그래서, 크게, 규모를 잡아두세요.
+회원 의 숫자 :1000, int ,
+넉넉하게 잡기.
+제목, 본문, 글자수 , 이미지 장수 등의 제한 여부를 꼭 알려주기.

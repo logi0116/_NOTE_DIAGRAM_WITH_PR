@@ -1,0 +1,91 @@
+JSP, 안에서, 반복문, 조건문, 출력, 변수 사용하는 부분,
+좀 더 쉽게 작성하고 싶어요. 그래서, 도구를 이용하는데.
+by java , 이용해서.
+JSTL (JavaServer Pages Standard Tag Library)
+
+jsp, 스프링, 부트, 다른 프레임워크를 사용하건,
+반드시, 순서.
+1. 해당 라이브러리(기능) , 설치
+2. 사용 적용.
+
+현재, maven, gradle(코끼리) 빌드 툴,
+역할: 웹 프로젝트에 필요한 기능들을 설치 및 사용할수 있게 준비 해주는 기능.
+
+도구 쇼핑, 기능 쇼핑,
+사이트 이름 maven
+https://mvnrepository.com/
+예) jstl
+https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl/1.2
+
+gradle에서 설정하는 코드.
+// https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl
+implementation group: 'javax.servlet.jsp.jstl', name: 'jstl', version: '1.2'
+
+변경 함, 구버전으로
+implementation group: 'jstl', name: 'jstl', version: '1.2'
+
+build.gradle 파일이 있음. 여기에 복붙.
+
+// 설정후, 오른쪽 상단 , 코끼리 싱크 버튼 클릭 해서 , 적용하기.
+자주 반복적으로 사용하는 빌드 도구의 주소들을 ,
+나중에, 선택해서 사용, 따로 복사해두기.
+
+설치 후, JSTL 기본 사용법 확인 해보기.
+
+사용법
+1) 사용하는 jsp 페이지 상단에 jstl 를 이용하겠다는 코드 한줄. 보통은 복붙해서 사용하지,
+다 작성 안합니다.
+이런 경우. 네임스페이스라고 설정 코드라고 해요.
+html 메타 태그,
+설정 코드
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+사용법
+1) 반복문
+문법 정의, <c:forEach>  태그 이용하기.
+속성,
+var(하나 꺼내서 사용할 요소의 변수명) ,
+ items(목록 리스트 ),
+ begin/end(인덱스에서 순번 정하기.)
+예)
+<ul>
+  <c:forEach var="dto" items="${list}">
+    <li>
+      ${dto}
+    </li>
+  </c:forEach>
+</ul>
+
+
+2) 조건문
+<c:if> , <c:choose>
+기본 문법
+ <c:if test="조건식">
+test , 속성, 무언가 테스트한다.
+
+예)
+<c:if test="${list.size()} % 2 == 0">
+  짝수
+</c:if>
+<c:if test="${list.size()} % 2 != 0">
+  홀수
+</c:if>
+
+기본 문법, 예제
+<c:choose>
+  <c:when test="${list.size()} % 2 == 0">
+    짝수
+  </c:when>
+  <c:otherwise>
+    홀수
+  </c:otherwise>
+</c:choose>
+
+3) 변수 사용
+기본 문법
+<c:set var="변수명" value="변수에 담을 값">
+예)
+설정.
+<c:set var="var1" value="lsy">
+이용.
+점심 : ${var1}

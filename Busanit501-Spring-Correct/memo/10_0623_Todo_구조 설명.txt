@@ -1,0 +1,37 @@
+api , 명세서
+
+get , /login , 폼
+post , /login , 처리
+게시판 입력.
+get , /board/register , 폼
+post , /board/registerResult , 처리
+게시판 수정.
+get , /board/update , 폼
+post , /board/updateResult , 처리
+
+
+파일 명 변경 단축키, shift + f6
+
+TodoList 미니 프로젝트, api 명세서 작성 해보기.
+번호  기능      컨트롤러             url 주소       동작방식     뷰
+1 목록(전체)      TodoListController   /todo/list     get     /WEB-INF/todo/todoList.jsp
+=========================================================================================
+변경 목록(전체)      TodoList2Controller   /todo/list2     get     /WEB-INF/todo/todoList2.jsp
+=========================================================================================
+2   등록(폼)  TodoRegController     /todo/register    get     /WEB-INF/todo/todoReg.jsp
+=========================================================================================
+변경 등록(폼)  TodoReg2Controller     /todo/register2    get     /WEB-INF/todo/todoReg2.jsp
+=========================================================================================
+3   등록(처리)  TodoRegController   /todo/register    post    리다이렉트(리스트화면)
+=========================================================================================
+변경 등록(처리)  TodoReg2Controller   /todo/register2    post    리다이렉트(리스트화면)
+=========================================================================================
+
+4 조회(한개)    TodoReadController   /todo/read       get     /WEB-INF/todo/todoRead.jsp
+=========================================================================================
+변경 조회(한개)    TodoRead2Controller   /todo/read2       get     /WEB-INF/todo/todoRead2.jsp
+
+=========================================================================================
+5 수정(폼)    TodoUpdateController   /todo/update     get     /WEB-INF/todo/todoUpd.jsp
+6 수정(처리)    TodoUpdateController   /todo/update   post     리다이렉트(리스트화면)
+7 삭제(처리)    TodoDeleteController   /todo/delete   post     리다이렉트(리스트화면)

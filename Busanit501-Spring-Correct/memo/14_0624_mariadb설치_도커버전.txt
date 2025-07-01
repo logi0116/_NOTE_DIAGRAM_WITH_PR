@@ -1,0 +1,30 @@
+1
+Docker Image 가져오기
+docker pull mariadb
+
+2
+docker run -p 3306:3306 --name {컨테이너 이름 작성} -e MARIADB_ROOT_PASSWORD={비밀번호} -d mariadb
+ex) docker run -p 3306:3306 --name mariaDB -e MARIADB_ROOT_PASSWORD=1234 -d mariadb
+
+3. MariaDB에 접속하기
+
+docker exec -it {컨테이너 이름} mariadb -uroot -p
+ex) docker exec -it mariaDB mariadb -uroot -p
+
+MariaDB 사용자 추가 및 user 권한 설정
+
+1. 데이터 베이스 생성
+create database {db_name};
+ex) create database webdb;
+
+2 사용자 추가
+create user 'user_name'@'ip_address' identified by 'user_password';
+ex) create user 'webuser'@'%' identified by 'webuser';
+
+3사용자에게 권한 부여
+grant all privileges on db_name.* to 'user_name'@'ip_address';
+
+ex) grant all privileges on *.* to 'webuser'@'%';
+
+4 변경사항 적용
+flush privileges;

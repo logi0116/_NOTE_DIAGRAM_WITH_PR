@@ -1,0 +1,132 @@
+# 서블릿, JSP, 웹 MVC 기본 개념 및 비교
+
+## 서블릿(Servlet)
+- **개념**: 자바를 사용하여 웹 페이지를 동적으로 생성하는 서버 측 프로그램
+- **특징**:
+  - 자바 코드 안에 HTML을 포함
+  - 요청을 처리하고 응답을 생성하는 자바 클래스
+  - javax.servlet.http.HttpServlet 클래스를 상속받음
+  - 컨테이너(톰캣 등)에 의해 관리됨
+- **장점**:
+  - 자바의 모든 API 사용 가능
+  - 높은 성능과 확장성
+  - 다양한 요청 방식(GET, POST 등) 처리 가능
+- **단점**:
+  - UI 변경 시 자바 코드 수정 필요
+  - HTML 작성이 불편함
+
+```java
+// 서블릿 예제
+public class HelloServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<html><body>");
+        out.println("<h1>안녕하세요, 서블릿입니다!</h1>");
+        out.println("</body></html>");
+    }
+}
+```
+
+## JSP(JavaServer Pages)
+- **개념**: HTML 내에 자바 코드를 삽입하여 동적 웹 페이지를 생성하는 기술
+- **특징**:
+  - HTML 안에 자바 코드 포함
+  - 서블릿으로 변환되어 실행됨
+  - 내장 객체(request, response, session 등) 제공
+  - 액션 태그와 EL(Expression Language), JSTL 지원
+- **장점**:
+  - HTML 작성이 용이함
+  - 화면 구현에 집중 가능
+  - 개발 생산성 향상
+- **단점**:
+  - 비즈니스 로직과 프레젠테이션 로직이 혼재될 수 있음
+  - JSP 스크립트릿의 과도한 사용으로 유지보수 어려움
+
+```jsp
+<!-- JSP 예제 -->
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSP 예제</title>
+</head>
+<body>
+    <h1>안녕하세요, JSP입니다!</h1>
+    <%
+        String message = "현재 시간은: ";
+        java.util.Date now = new java.util.Date();
+    %>
+    <p><%= message %> <%= now %></p>
+</body>
+</html>
+```
+
+## 웹 MVC(Model-View-Controller) 패턴
+- **개념**: 애플리케이션을 Model, View, Controller 세 가지 역할로 분리하는 디자인 패턴
+- **구성 요소**:
+  - **Model**: 데이터와 비즈니스 로직 처리
+  - **View**: 사용자 인터페이스, 데이터 표현
+  - **Controller**: 사용자 입력 처리, Model과 View 연결
+- **특징**:
+  - 관심사의 분리(Separation of Concerns)
+  - 코드 재사용성 증가
+  - 유지보수 용이성 향상
+- **구현**:
+  - 서블릿이 Controller 역할
+  - JSP가 View 역할
+  - JavaBeans, DTO, DAO 등이 Model 역할
+
+## 서블릿과 JSP 비교표
+
+| 특성 | 서블릿(Servlet) | JSP(JavaServer Pages) |
+|------|----------------|------------------------|
+| 언어 형태 | 자바 코드 내에 HTML | HTML 내에 자바 코드 |
+| 주요 용도 | 비즈니스 로직 처리 | 화면 표현(View) |
+| 실행 과정 | 직접 컴파일 후 실행 | JSP → 서블릿 변환 → 컴파일 → 실행 |
+| 변경 반영 | 재컴파일 필요 | 자동 반영 (일반적으로) |
+| 작성 용이성 | HTML 작성 어려움 | HTML 작성 쉬움 |
+| 디버깅 | 상대적으로 쉬움 | 상대적으로 어려움 |
+| 성능 | 최초 로딩 빠름 | 최초 변환 시간 필요 |
+
+## MVC 패턴 흐름도
+
+```
+[클라이언트] → HTTP 요청 → [웹서버]
+                             │
+                          요청 전달
+                             │
+                             ▼
+                     [Controller (서블릿)]
+                             │
+                      요청 처리 및 분석
+                             │
+                             ▼
+          ┌─────────────────┴─────────────────┐
+          │                                   │
+          ▼                                   ▼
+   [Model (JavaBeans,             데이터 전달    [View (JSP)]
+    DTO, DAO, Service)]     ─────────────────▶     │
+          │                                        │
+    데이터 처리 및 반환                              HTML 생성
+          │                                        │
+          └─────────────────┬────────────────────┘
+                             │
+                             ▼
+                      HTTP 응답 반환
+                             │
+                             ▼
+                       [클라이언트]
+```
+
+## 서블릿 기반 MVC 패턴의 처리 흐름
+1. 클라이언트가 요청을 보냄
+2. 서블릿 컨테이너가 요청을 받아 적절한 서블릿(Controller)에 전달
+3. Controller는 요청을 분석하고 필요한 Model을 호출
+4. Model은 비즈니스 로직을 처리하고 결과를 Controller에 반환
+5. Controller는 처리 결과를 바탕으로 적절한 View를 선택
+6. View(JSP)는 Model 데이터를 사용하여 화면을 생성
+7. 생성된 화면이 클라이언트에게 응답으로 전달됨
+
+이러한 MVC 패턴을 기반으로 스프링 MVC, 스트럿츠 등의 프레임워크가 발전했으며, 현대 웹 애플리케이션 개발에서 널리 사용되고 있습니다.

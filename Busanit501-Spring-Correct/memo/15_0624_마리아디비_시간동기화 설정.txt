@@ -1,0 +1,23 @@
+터미널 명령어창에서 ,
+도커 데스크톱의 마리아디비 컨테이너 실행 후 ,
+[my_container] 의 값 예시: -> 도커의 데스크톱 -> 컨테이너 아이디 복사
+1ab078435e089644fb46258ee8b017f3aa2b6e2dbc30bb718a812c8de2941a9e
+1
+docker exec -it [my_container] /bin/bash
+docker exec -it a8629aa79f500c525ad0a39afbbcbee65c94a18d086c812c3b72d5ca4528b460 /bin/bash
+3da9c241a286
+2
+dpkg-reconfigure tzdata
+
+2-
+안될 경우
+apt-get update
+apt-get install --reinstall tzdata
+
+3
+5 asia
+4
+68 seoul
+
+5
+date 확인.

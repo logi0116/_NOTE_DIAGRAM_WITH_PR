@@ -1,0 +1,21 @@
+DTO(Data Transfer Object)
+: 데이터를 전달하는 용도로 사용하는 객체
+예시)회원가입
+웹 브라우저 -> 회원가입 로직처리-> 백엔드 전달.
+컨트롤러(입력받은 정보 = 맵핑,
+ username, password, email, address
+ 멤버로 가지는 DTO 클래스 만들기.
+ ->  서비스 계층 -> 디비(영속계층)
+
+ex)낱개로 받는 경우
+컨트롤러(String username, String password, String email, String address)
+ex) DTO 클래스,
+public class MemberDTO {
+ private String username,
+ private String password,
+ private String email,
+ private String address,
+ 게터/세터/toString
+}
+컨트롤러(MemberDTO memberDTO)
+
