@@ -8,20 +8,35 @@
         "type": "tabs",
         "children": [
           {
-            "id": "40e03515af5affd7",
+            "id": "dda13e71cee2921a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "second/환영합니다!.md",
+                "file": "Notion/대사/대사.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "환영합니다!"
+              "title": "대사"
+            }
+          },
+          {
+            "id": "4b36a169be56e887",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Notion/대사/대사.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "대사"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -165,27 +180,39 @@
       "canvas:새 캔버스 만들기": false,
       "daily-notes:오늘의 일일 노트 열기": false,
       "templates:템플릿 삽입": false,
-      "command-palette:명령어 팔레트 열기": false
+      "command-palette:명령어 팔레트 열기": false,
+      "obsidian-importer:Open Importer": false
     }
   },
-  "active": "40e03515af5affd7",
+  "active": "4b36a169be56e887",
   "lastOpenFiles": [
-    "JavaLearn/서적 정리/자바 웹 개발 워크북[성장하는 개발자를 만드는 실무형 로드맵].xmind",
-    "JavaLearn/서적 정리/자바 에센셜 정리.xmind",
-    "JavaLearn/서적 정리",
-    "JavaLearn/자바 웹서버 구축/웹서버 구축 기본 250627.xmind",
-    "JavaLearn/자바 웹서버 구축/웹서버 구축 기본 250626(전체적인 뼈대 만들고 로그인 체크 세션 쿠키 등 활용).xmind",
-    "JavaLearn/자바 웹서버 구축/웹서버 구축 기본 250625(DTO VO 등 흐름과 관련 내용).xmind",
-    "JavaLearn/자바 웹서버 구축",
-    "JavaLearn/250630 복습 및 리스너.xmind",
-    "JavaLearn/250701.xmind",
+    "Notion/대사/테스트.md",
+    "Notion/대사/대사.md",
+    "second/가져오기 테스트/무제.canvas",
+    "second/가져오기 테스트/무제.md",
+    "second/임포트 방법/무제.md",
+    "ConsoleTodoListApp/src/main/java/com/busanit501/consoletodolistapp/HelloWorld.java",
+    "ConsoleTodoListApp/build/resources/test",
+    "ConsoleTodoListApp/build/classes/java/test",
+    "ConsoleTodoListApp/build/resources/main",
+    "ConsoleTodoListApp/build/resources",
+    "ConsoleTodoListApp/build/classes/java/main",
+    "ConsoleTodoListApp/build/classes/java",
+    "ConsoleTodoListApp/build/classes",
+    "ConsoleTodoListApp/src/main/java/com/busanit501/consoletodolistapp/Todo.java",
+    "ConsoleTodoListApp/build/tmp/war/MANIFEST.MF",
+    "simpleloginapp/simpleloginapp/HELP.md",
+    "Pasted image 20250702112807.png",
+    "second/환영합니다!.md",
+    "image.png",
+    "image 1.png",
+    "README.md",
+    "Busanit501-Spring-Correct/새 텍스트 문서.png",
+    "Busanit501-Spring-Correct/fmprozone.jpg",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/캔버스 그리기.md",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/cursor_java_web_application_development.md",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/CPFTR 패턴 도출까지 흐름.md",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/CPFTR 패턴 + 이모지 추가.md",
-    "Busanit501-Spring-Correct/GPT 프롬프트 모음",
-    "250701.xmind",
-    "무제.canvas",
     "옵시디언 테스트/무제.md",
     "Pasted image 20250701091321.png",
     "Pasted image 20250701091334.png"
