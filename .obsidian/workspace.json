@@ -4,39 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "9635bd12a8e718cf",
+        "id": "580ddb661c716bac",
         "type": "tabs",
         "children": [
           {
-            "id": "dda13e71cee2921a",
+            "id": "d3fe4b21e7c095dc",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "Notion/대사/대사.md",
-                "mode": "source",
-                "source": false
+                "file": "Busanit501-Spring-Correct/fmprozone.jpg"
               },
-              "icon": "lucide-file",
-              "title": "대사"
-            }
-          },
-          {
-            "id": "4b36a169be56e887",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Notion/대사/대사.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "대사"
+              "icon": "lucide-image",
+              "title": "fmprozone"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -184,10 +167,19 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "4b36a169be56e887",
+  "active": "2a3df1b469e56376",
   "lastOpenFiles": [
-    "Notion/대사/테스트.md",
+    "README.md",
+    "Pasted image 20250702112807.png",
+    "image 1.png",
+    "image.png",
+    "GameAIPro_Chapter06_The_Behavior_Tree_Starter_Kit.pdf",
+    "Behavior Tree를 알아봅시다.pdf",
+    "코딩 리뷰 패턴 만들어보기.png",
+    "Busanit501-Spring-Correct/fmprozone.jpg",
+    "Busanit501-Spring-Correct/새 텍스트 문서.png",
     "Notion/대사/대사.md",
+    "Notion/대사/테스트.md",
     "second/가져오기 테스트/무제.canvas",
     "second/가져오기 테스트/무제.md",
     "second/임포트 방법/무제.md",
@@ -199,16 +191,8 @@
     "ConsoleTodoListApp/build/classes/java/main",
     "ConsoleTodoListApp/build/classes/java",
     "ConsoleTodoListApp/build/classes",
-    "ConsoleTodoListApp/src/main/java/com/busanit501/consoletodolistapp/Todo.java",
-    "ConsoleTodoListApp/build/tmp/war/MANIFEST.MF",
     "simpleloginapp/simpleloginapp/HELP.md",
-    "Pasted image 20250702112807.png",
     "second/환영합니다!.md",
-    "image.png",
-    "image 1.png",
-    "README.md",
-    "Busanit501-Spring-Correct/새 텍스트 문서.png",
-    "Busanit501-Spring-Correct/fmprozone.jpg",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/캔버스 그리기.md",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/cursor_java_web_application_development.md",
     "Busanit501-Spring-Correct/GPT 프롬프트 모음/CPFTR 패턴 도출까지 흐름.md",
